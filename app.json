@@ -1,0 +1,44 @@
+{
+    "name": "Ben Sessions Excursion Bot",
+    "description": "Telegram bot to extract pyrogram sessions",
+    "logo": "https://telegra.ph/file/c37de0fdccdad7e391714.jpg",
+    "keywords": [
+    "python3",
+    "telegram",
+    "bot",
+    "pyrogram session bot",
+    "sessions",
+    "telegram-bot",
+    "pyrogram"
+    ],
+    "stack": "container",
+    "env": {
+      "BOT_TOKEN": {
+        "description": "bot token",
+        "value": "",
+        "required": false
+      },
+      "SESSION_NAME2": {
+        "description": "session",
+        "value": "",
+        "required": false
+      },
+      "SESSION_NAME": {
+        "description": "session",
+        "value": "",
+        "required": false
+      }
+    },
+    "buildpacks": [
+          {
+              "url": "heroku/python"
+          },
+          {
+              "url": "heroku/nodejs"
+          },
+          {
+              "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+          }
+      ],
+      "stack": "container"
+  }

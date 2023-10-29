@@ -1,0 +1,172 @@
+from pyrogram import Client, filters
+from pyrogram1 import Client as Client1
+from pyrogram.types import Message, CallbackQuery, ForceReply
+from pyrogram.types import InlineKeyboardMarkup as Keyboard, InlineKeyboardButton as Button
+from pyrogram.errors import (ApiIdInvalid, PhoneNumberInvalid, PhoneCodeInvalid, PhoneCodeExpired, SessionPasswordNeeded, PasswordHashInvalid)
+from pyrogram1.errors import (
+    ApiIdInvalid as ApiIdInvalid1,
+    PhoneNumberInvalid as PhoneNumberInvalid1,
+    PhoneCodeInvalid as PhoneCodeInvalid1,
+    PhoneCodeExpired as PhoneCodeExpired1,
+    SessionPasswordNeeded as SessionPasswordNeeded1,
+    PasswordHashInvalid as PasswordHashInvalid1
+)
+from pyrolistener import Listener, exceptions
+from typing import Union
+
+
+app = Client(
+    "SessionsExcutor",
+    api_id=13848352,
+    api_hash="99172839e8a8d950529aebfe46528cd0",
+    bot_token="6125907776:AAEU2bnP2-bALz4h-5IlOytxSYLTi6OQprI"
+)
+listener = Listener(client=app)
+
+
+markup: Keyboard = Keyboard([
+        [
+            Button("ᯓ 𓆩 ˹𝙱𝙴𝙽˼ 𓆪 #1", user_id=5451878368)
+        ],
+        [
+            Button("𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚅1 〄", "pyrogram 1"),
+            Button("𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼  𝚅2 𝄵", "pyrogram 2")
+        ],
+        [
+            Button("𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 (𝙱𝙾𝚃) 𖢣", "pyrogram bot")
+        ]
+    ])
+
+
+@app.on_message(filters.command(("generate", "session", "pyrogram")))
+async def s_type(_: Client, message: Message):
+    caption = " 𝙲𝙷𝙾𝙾𝚂𝙴 𝚈𝙾𝚄𝚁 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚅𝙴𝚁𝚂𝙸𝙾𝙽 𝙰𝙽𝙳 𝙸𝙵 𝚃𝙷𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙵𝙾𝚁 𝙰 𝙱𝙾𝚃 𝙾𝚁 𝙽𝙾𝚃 𓀎"
+    await message.reply(caption, reply_markup=markup, reply_to_message_id=message.id)
+
+
+@app.on_callback_query(filters.regex(r"^(pyrogram )"))
+async def gen(_: Client, callback: CallbackQuery):
+    cd: str = callback.data
+    is_bot: Union[None, bool] = None
+    version: Union[None, int] = None
+    if cd.endswith("bot"):
+        await callback.answer("- 𝚃𝙷𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝚆𝙸𝙻𝙻 𝙱𝙴 𝙸𝙽 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼  𝚅2 𝄵", show_alert=True)
+        is_bot = True
+        version = 2
+    elif cd.endswith("1"): version = 1
+    else: version = 2
+    await callback.edit_message_text("- 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙴𝚇𝚃𝚁𝙰𝙲𝚃𝙾𝚁 𝚂𝚃𝙰𝚁𝚃𝙴𝙳.")
+    s_vars = await getter(callback, is_bot, version)
+    if not s_vars: return
+    await registration(s_vars[0], s_vars[1], s_vars[2], is_bot, version, callback)
+        
+
+async def getter(callback: CallbackQuery, is_bot: bool, version: int):
+    user_id: int = callback.from_user.id
+    try: s_api_id: Message = await listener.listen(
+        from_id=user_id,
+        chat_id=user_id,
+        text="- 𝚂𝙴𝙽𝙳 𝚈𝙾𝚄𝚁 𝙰𝙿𝙸 𝙸𝙳 \n- 𝚂𝙴𝙽𝙳 /default 𝚃𝙾 𝚄𝚂𝙴 𝙳𝙴𝙵𝙰𝚄𝙻𝚃 𝙰𝙿𝙸𝚂\n- 𝚂𝙴𝙽𝙳 /cancel 𝚃𝙾 𝚂𝚃𝙾𝙿 𝚃𝙷𝙴 𝙿𝚁𝙾𝙲𝙴𝚂𝚂",
+        reply_markup=ForceReply(selective=True, placeholder="- 𝚈𝙾𝚄𝚁 𝙰𝙿𝙸 𝙸𝙳 : "),
+        reply_to_message_id=callback.message.id,
+        timeout=60,
+    )
+    except exceptions.TimeOut: return await callback.message.reply("- 𝚁𝚄𝙽 𝙾𝚄𝚃 𝙾𝙵 𝚃𝙸𝙼𝙴 𝚃𝙾 𝚁𝙴𝙲𝙴𝙸𝚅𝙴 𝚃𝙷𝙴 𝙰𝙿𝙸 𝙸𝙳.", reply_markup=markup)
+    if s_api_id.text == "/default": 
+        _id: int = app.api_id
+        _hash: str = app.api_hash
+    elif s_api_id.text == "/cancel":
+        await s_api_id.reply("- 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙲𝙰𝙽𝙲𝙴𝙻𝙻𝙴𝙳.", reply_markup=markup, reply_to_message_id=s_api_id.id)
+        return False
+    else:
+        try: int(s_api_id.text)
+        except ValueError: return await s_api_id.reply("- 𝙰𝙿𝙸 𝙸𝙳 𝙼𝚄𝚂𝚃 𝙱𝙴 𝚃𝚈𝙿𝙴 𝙾𝙵 𝙸𝙽𝚃𝙴𝙶𝙴𝚁\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_to_message_id=s_api_id.id,  reply_markup=markup)
+        try: s_api_hash: Message = await listener.listen(
+            from_id=user_id,
+            chat_id=user_id,
+            text="- 𝚂𝙴𝙽𝙳 𝚈𝙾𝚄𝚁 𝙰𝙿𝙸 𝙷𝙰𝚂𝙷\n- 𝚂𝙴𝙽𝙳 /cancel 𝚃𝙾 𝙲𝙰𝙽𝙲𝙴𝙻 𝚃𝙷𝙴 𝙿𝚁𝙾𝙲𝙴𝚂𝚂.",
+            reply_markup=ForceReply(selective=True, placeholder="- 𝚈𝙾𝚄𝚁 𝙰𝙿𝙸 𝙷𝙰𝚂𝙷 : "),
+            reply_to_message_id=s_api_id.id,
+            timeout=60
+        )
+        except exceptions.TimeOut: await callback.message.reply("- 𝚁𝚄𝙽 𝙾𝚄𝚃 𝙾𝙵 𝚃𝙸𝙼𝙴 𝚃𝙾 𝚁𝙴𝙲𝙴𝙸𝚅𝙴 𝚃𝙷𝙴 𝙰𝙿𝙸 𝙷𝙰𝚂𝙷. ‌ਊ", reply_markup=markup)
+        if s_api_hash.text == "/cancel":
+            await s_api_hash.reply("- 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙲𝙰𝙽𝙲𝙴𝙻𝙻𝙴𝙳.", reply_markup=markup, reply_to_message_id=s_api_hash.id)
+            return False
+        _id, _hash = int(s_api_id.text), s_api_hash.text
+    try: tp: Message = await listener.listen(
+        from_id=user_id,
+        chat_id=user_id,
+        text=f"- 𝚂𝙴𝙽𝙳 𝚈𝙾𝚄𝚁 {'𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽' if is_bot else '𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁 -> +128372'}\n- 𝚂𝙴𝙽𝙳 /cancel 𝚃𝙾 𝙺𝙸𝙻𝙻 𝚃𝙷𝙴 𝙿𝚁𝙾𝙲𝙴𝚂𝚂. ࿊",
+        reply_markup=ForceReply(selective=True, placeholder=f"- 𝚈𝙾𝚄𝚁 {'𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽' if is_bot else '𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁'} : "),
+        reply_to_message_id=s_api_hash.id,
+        timeout=60
+    )
+    except exceptions.TimeOut: await callback.message.reply("- 𝚁𝚄𝙽 𝙾𝚄𝚃 𝙾𝙵 𝚃𝙸𝙼𝙴 𝚃𝙾 𝚁𝙴𝙲𝙴𝙸𝚅𝙴 𝚃𝙷𝙴 𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽. ‌ਊ", reply_markup=markup)
+    if tp.text == "/cancel":
+        await tp.reply("- 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙲𝙰𝙽𝙲𝙴𝙻𝙻𝙴𝙳.", reply_to_message_id=tp.id, reply_markup=markup)
+        return False
+    elif is_bot:
+        _token = tp.text
+        return _id, _hash, _token
+    else :
+        _number = tp.text
+        return _id, _hash, _number
+    
+
+async def registration(_id: int, _hash: str, tp: str, is_bot: bool, version: int,callback: CallbackQuery):
+    user_id = callback.from_user.id
+    _token = tp if is_bot else None
+    _number = tp if not is_bot else None
+    await callback.message.reply(f"- 𝚃𝚁𝚈𝙸𝙽𝙶 𝚃𝙾 𝚂𝙸𝙽𝙶 𝙸𝙽 𝚅𝙸𝙰 {'𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽' if is_bot else '𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁'} 𐂠")
+    if is_bot:
+        client = Client("bot", api_id=_id, api_hash=_hash, bot_token=_token, in_memory=True)
+        await client.connect()
+        try:await client.sign_in_bot(_token)
+        except: return await callback.message.reply(" 𝙸𝙽𝚅𝙰𝙻𝙸𝙳 𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup)
+        session = await client.export_session_string()
+        return await callback.message.reply(
+            f"- 𝚈𝙾𝚄𝚁 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳\n\n`{session}`",
+            reply_to_message_id = callback.message.id
+        )
+    client: Union[Client, Client1] = Client("acc", in_memory=True) if version == 2 else Client1("acc")
+    client.api_id = _id
+    client.api_hash = _hash
+    await client.connect()
+    try: p_code_hash = await client.send_code(_number)
+    except (ApiIdInvalid, ApiIdInvalid1): return await callback.message.reply("- 𝚃𝙷𝙴𝚁𝙴 𝙸𝚂 𝙰𝙽 𝙴𝚁𝚁𝙾𝚁 𝚆𝙸𝚃𝙷 𝚈𝙾𝚄𝚁 \"𝙰𝙿𝙸 𝙸𝙳\" 𝙾𝚁 \"𝙰𝙿𝙸 𝙷𝙰𝚂𝙷\".\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽, 𝙿𝙻𝙴𝙰𝚂𝙴.", reply_markup=markup)
+    except (PhoneNumberInvalid, PhoneNumberInvalid1): return await callback.message.reply("- 𝚃𝙷𝙴𝚁𝙴 𝙸𝚂 𝙰𝙽 𝙴𝚁𝚁𝙾𝚁 𝚆𝙸𝚃𝙷 𝚈𝙾𝚄𝚁 \"𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁\".\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽, 𝙿𝙻𝙴𝙰𝚂𝙴.", reply_markup=markup)
+    try: code = await listener.listen(
+        from_id=user_id,
+        chat_id=user_id,
+        text="- 𝚆𝙴 𝙷𝙰𝚅𝙴 𝚂𝙴𝙽𝚃 𝙰𝙽 𝙾𝚃𝙿 𝙲𝙾𝙳𝙴 𝚃𝙾 𝚈𝙾𝚄𝚁 𝙰𝙲𝙲𝙾𝚄𝙽𝚃. \n- 𝙲𝙷𝙴𝙲𝙺 𝚈𝙾𝚄𝚁 𝙿𝚁𝙸𝚅𝙰𝚃𝙴 𝙲𝙷𝙰𝚃𝚂. ‌♡⁩",
+        timeout=120,
+        reply_markup=ForceReply(selective=True, placeholder="𝙸𝙽 𝚃𝙷𝙸𝚂 𝙵𝙾𝚁𝙼𝚄𝙻𝙰: 1 2 3 4 5 6")
+    )
+    except exceptions.TimeOut: return await callback.message.reply("- 𝚃𝙷𝙴 𝚃𝙸𝙼𝙴 𝚃𝙾 𝚁𝙴𝙲𝙴𝙸𝚅𝙴 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝙷𝙰𝚂 𝚁𝚄𝙽 𝙾𝚄𝚃.\n - 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup)
+    try: await client.sign_in(_number, p_code_hash, code.text.replace(" ", ""))
+    except (PhoneCodeInvalid, PhoneCodeInvalid1): return await callback.message.reply("- 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝚈𝙾𝚄 𝙷𝙰𝚅𝙴 𝚂𝙴𝙽𝚃 𝙸𝚂 𝚆𝚁𝙾𝙽𝙶.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup, reply_to_message_id=code.id)
+    except (PhoneCodeExpired, PhoneCodeExpired1): return await callback.message.reply("- 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝚈𝙾𝚄 𝙷𝙰𝚅𝙴 𝚂𝙴𝙽𝚃 𝙸𝚂 𝙴𝚇𝙿𝙸𝚁𝙴𝙳.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup, reply_to_message_id=code.id)
+    except (SessionPasswordNeeded, SessionPasswordNeeded1):
+        try:password = await listener.listen(
+            from_id=user_id,
+            chat_id=user_id,
+            text="- 𝙴𝙽𝚃𝙴𝚁 𝚈𝙾𝚄𝚁 𝚃𝚆𝙾 𝚂𝚃𝙴𝙿 𝚅𝙴𝚁𝙸𝙵𝙸𝙲𝙰𝚃𝙸𝙾𝙽 𝙿𝙰𝚂𝚂𝚆𝙾𝚁𝙳.",
+            reply_markup=ForceReply(selective=True, placeholder="- 𝚈𝙾𝚄𝚁 𝙿𝙰𝚂𝚂𝚆𝙾𝚁𝙳: "),
+            timeout=180,
+            reply_to_message_id=code.id
+        )
+        except exceptions.TimeOut:return await callback.message.reply("- 𝚃𝙷𝙴 𝚃𝙸𝙼𝙴 𝚃𝙾 𝚁𝙴𝙲𝙴𝙸𝚅𝙴 𝚃𝙷𝙴 𝙿𝙰𝚂𝚂𝚆𝙾𝚁𝙳 𝙷𝙰𝚂 𝚁𝚄𝙽 𝙾𝚄𝚃.",  reply_markup=markup)
+        try: await client.check_password(password.text)
+        except (PasswordHashInvalid, PasswordHashInvalid1): return await callback.message.reply("- 𝚃𝚆𝙾 𝚂𝚃𝙴𝙿 𝚅𝙴𝚁𝙸𝙵𝙸𝙲𝙰𝚃𝙸𝙾𝙽 𝙿𝙰𝚂𝚂𝚆𝙾𝚁𝙳 𝙸𝚂 𝙸𝙽𝚅𝙰𝙻𝙸𝙳. \n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽. ", reply_markup=markup)
+    session = await client.export_session_string()
+    await client.send_message(
+        "me",
+        f"- 𝚈𝙾𝚄𝚁 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳\n\n`{session}`",
+        reply_to_message_id = callback.message.id
+    )
+    client.disconnect()
+    await app.send_message(user_id, "- 𝚈𝙾𝚄𝚁 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝚂𝚄𝙲𝙲𝙴𝚂𝚂𝙵𝚄𝙻𝙻𝚈. \n- 𝙲𝙷𝙴𝙲𝙺 𝚈𝙾𝚄𝚁 𝚂𝙰𝚅𝙴𝙳 𝙼𝙴𝚂𝚂𝙰𝙶𝙴𝚂. 💙", reply_markup=Keyboard([[Button("ᯓ 𓆩 ˹𝙱𝙴𝙽˼ 𓆪 #1", user_id=5451878368)]]))
+
+
+if __name__ == "__main__": app.run()
