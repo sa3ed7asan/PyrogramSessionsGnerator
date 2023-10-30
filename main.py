@@ -1,16 +1,7 @@
 from pyrogram import Client, filters
-from pyrogram1 import Client as Client1
 from pyrogram.types import Message, CallbackQuery, ForceReply
 from pyrogram.types import InlineKeyboardMarkup as Keyboard, InlineKeyboardButton as Button
 from pyrogram.errors import (ApiIdInvalid, PhoneNumberInvalid, PhoneCodeInvalid, PhoneCodeExpired, SessionPasswordNeeded, PasswordHashInvalid)
-from pyrogram1.errors import (
-    ApiIdInvalid as ApiIdInvalid1,
-    PhoneNumberInvalid as PhoneNumberInvalid1,
-    PhoneCodeInvalid as PhoneCodeInvalid1,
-    PhoneCodeExpired as PhoneCodeExpired1,
-    SessionPasswordNeeded as SessionPasswordNeeded1,
-    PasswordHashInvalid as PasswordHashInvalid1
-)
 from pyrolistener import Listener, exceptions
 from typing import Union
 
@@ -29,16 +20,13 @@ markup: Keyboard = Keyboard([
             Button("ᯓ 𓆩 ˹𝙱𝙴𝙽˼ 𓆪 #1", user_id=5451878368)
         ],
         [
-            Button("𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚅1 〄", "pyrogram 1"),
+            Button("𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 (𝙱𝙾𝚃) 𖢣", "pyrogram bot"),
             Button("𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼  𝚅2 𝄵", "pyrogram 2")
         ],
-        [
-            Button("𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 (𝙱𝙾𝚃) 𖢣", "pyrogram bot")
-        ]
     ])
 
 
-@app.on_message(filters.command(("generate", "session", "pyrogram")))
+@app.on_message(filters.command("generate", "session", "pyrogram"))
 async def s_type(_: Client, message: Message):
     caption = " 𝙲𝙷𝙾𝙾𝚂𝙴 𝚈𝙾𝚄𝚁 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚅𝙴𝚁𝚂𝙸𝙾𝙽 𝙰𝙽𝙳 𝙸𝙵 𝚃𝙷𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙵𝙾𝚁 𝙰 𝙱𝙾𝚃 𝙾𝚁 𝙽𝙾𝚃 𓀎"
     await message.reply(caption, reply_markup=markup, reply_to_message_id=message.id)
@@ -53,15 +41,14 @@ async def gen(_: Client, callback: CallbackQuery):
         await callback.answer("- 𝚃𝙷𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝚆𝙸𝙻𝙻 𝙱𝙴 𝙸𝙽 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼  𝚅2 𝄵", show_alert=True)
         is_bot = True
         version = 2
-    elif cd.endswith("1"): version = 1
     else: version = 2
     await callback.edit_message_text("- 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙴𝚇𝚃𝚁𝙰𝙲𝚃𝙾𝚁 𝚂𝚃𝙰𝚁𝚃𝙴𝙳.")
-    s_vars = await getter(callback, is_bot, version)
+    s_vars = await getter(callback, is_bot)
     if not s_vars: return
-    await registration(s_vars[0], s_vars[1], s_vars[2], is_bot, version, callback)
+    await registration(s_vars[0], s_vars[1], s_vars[2], is_bot, callback)
         
 
-async def getter(callback: CallbackQuery, is_bot: bool, version: int):
+async def getter(callback: CallbackQuery, is_bot: bool):
     user_id: int = callback.from_user.id
     try: s_api_id: Message = await listener.listen(
         from_id=user_id,
@@ -114,7 +101,7 @@ async def getter(callback: CallbackQuery, is_bot: bool, version: int):
         return _id, _hash, _number
     
 
-async def registration(_id: int, _hash: str, tp: str, is_bot: bool, version: int,callback: CallbackQuery):
+async def registration(_id: int, _hash: str, tp: str, is_bot: bool, callback: CallbackQuery):
     user_id = callback.from_user.id
     _token = tp if is_bot else None
     _number = tp if not is_bot else None
@@ -129,13 +116,13 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, version: int
             f"- 𝚈𝙾𝚄𝚁 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳\n\n`{session}`",
             reply_to_message_id = callback.message.id
         )
-    client: Union[Client, Client1] = Client("acc", in_memory=True) if version == 2 else Client1("acc")
+    client: Client = Client("acc", in_memory=True)
     client.api_id = _id
     client.api_hash = _hash
     await client.connect()
     try: p_code_hash = await client.send_code(_number)
-    except (ApiIdInvalid, ApiIdInvalid1): return await callback.message.reply("- 𝚃𝙷𝙴𝚁𝙴 𝙸𝚂 𝙰𝙽 𝙴𝚁𝚁𝙾𝚁 𝚆𝙸𝚃𝙷 𝚈𝙾𝚄𝚁 \"𝙰𝙿𝙸 𝙸𝙳\" 𝙾𝚁 \"𝙰𝙿𝙸 𝙷𝙰𝚂𝙷\".\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽, 𝙿𝙻𝙴𝙰𝚂𝙴.", reply_markup=markup)
-    except (PhoneNumberInvalid, PhoneNumberInvalid1): return await callback.message.reply("- 𝚃𝙷𝙴𝚁𝙴 𝙸𝚂 𝙰𝙽 𝙴𝚁𝚁𝙾𝚁 𝚆𝙸𝚃𝙷 𝚈𝙾𝚄𝚁 \"𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁\".\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽, 𝙿𝙻𝙴𝙰𝚂𝙴.", reply_markup=markup)
+    except (ApiIdInvalid): return await callback.message.reply("- 𝚃𝙷𝙴𝚁𝙴 𝙸𝚂 𝙰𝙽 𝙴𝚁𝚁𝙾𝚁 𝚆𝙸𝚃𝙷 𝚈𝙾𝚄𝚁 \"𝙰𝙿𝙸 𝙸𝙳\" 𝙾𝚁 \"𝙰𝙿𝙸 𝙷𝙰𝚂𝙷\".\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽, 𝙿𝙻𝙴𝙰𝚂𝙴.", reply_markup=markup)
+    except (PhoneNumberInvalid): return await callback.message.reply("- 𝚃𝙷𝙴𝚁𝙴 𝙸𝚂 𝙰𝙽 𝙴𝚁𝚁𝙾𝚁 𝚆𝙸𝚃𝙷 𝚈𝙾𝚄𝚁 \"𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁\".\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽, 𝙿𝙻𝙴𝙰𝚂𝙴.", reply_markup=markup)
     try: code = await listener.listen(
         from_id=user_id,
         chat_id=user_id,
@@ -145,9 +132,9 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, version: int
     )
     except exceptions.TimeOut: return await callback.message.reply("- 𝚃𝙷𝙴 𝚃𝙸𝙼𝙴 𝚃𝙾 𝚁𝙴𝙲𝙴𝙸𝚅𝙴 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝙷𝙰𝚂 𝚁𝚄𝙽 𝙾𝚄𝚃.\n - 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup)
     try: await client.sign_in(_number, p_code_hash, code.text.replace(" ", ""))
-    except (PhoneCodeInvalid, PhoneCodeInvalid1): return await callback.message.reply("- 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝚈𝙾𝚄 𝙷𝙰𝚅𝙴 𝚂𝙴𝙽𝚃 𝙸𝚂 𝚆𝚁𝙾𝙽𝙶.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup, reply_to_message_id=code.id)
-    except (PhoneCodeExpired, PhoneCodeExpired1): return await callback.message.reply("- 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝚈𝙾𝚄 𝙷𝙰𝚅𝙴 𝚂𝙴𝙽𝚃 𝙸𝚂 𝙴𝚇𝙿𝙸𝚁𝙴𝙳.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup, reply_to_message_id=code.id)
-    except (SessionPasswordNeeded, SessionPasswordNeeded1):
+    except (PhoneCodeInvalid): return await callback.message.reply("- 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝚈𝙾𝚄 𝙷𝙰𝚅𝙴 𝚂𝙴𝙽𝚃 𝙸𝚂 𝚆𝚁𝙾𝙽𝙶.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup, reply_to_message_id=code.id)
+    except (PhoneCodeExpired): return await callback.message.reply("- 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝚈𝙾𝚄 𝙷𝙰𝚅𝙴 𝚂𝙴𝙽𝚃 𝙸𝚂 𝙴𝚇𝙿𝙸𝚁𝙴𝙳.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup, reply_to_message_id=code.id)
+    except (SessionPasswordNeeded):
         try:password = await listener.listen(
             from_id=user_id,
             chat_id=user_id,
@@ -158,7 +145,7 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, version: int
         )
         except exceptions.TimeOut:return await callback.message.reply("- 𝚃𝙷𝙴 𝚃𝙸𝙼𝙴 𝚃𝙾 𝚁𝙴𝙲𝙴𝙸𝚅𝙴 𝚃𝙷𝙴 𝙿𝙰𝚂𝚂𝚆𝙾𝚁𝙳 𝙷𝙰𝚂 𝚁𝚄𝙽 𝙾𝚄𝚃.",  reply_markup=markup)
         try: await client.check_password(password.text)
-        except (PasswordHashInvalid, PasswordHashInvalid1): return await callback.message.reply("- 𝚃𝚆𝙾 𝚂𝚃𝙴𝙿 𝚅𝙴𝚁𝙸𝙵𝙸𝙲𝙰𝚃𝙸𝙾𝙽 𝙿𝙰𝚂𝚂𝚆𝙾𝚁𝙳 𝙸𝚂 𝙸𝙽𝚅𝙰𝙻𝙸𝙳. \n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽. ", reply_markup=markup)
+        except (PasswordHashInvalid): return await callback.message.reply("- 𝚃𝚆𝙾 𝚂𝚃𝙴𝙿 𝚅𝙴𝚁𝙸𝙵𝙸𝙲𝙰𝚃𝙸𝙾𝙽 𝙿𝙰𝚂𝚂𝚆𝙾𝚁𝙳 𝙸𝚂 𝙸𝙽𝚅𝙰𝙻𝙸𝙳. \n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽. ", reply_markup=markup)
     session = await client.export_session_string()
     await client.send_message(
         "me",
