@@ -111,6 +111,7 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, callback: Ca
         try:await client.sign_in_bot(_token)
         except: return await callback.message.reply(" 𝙸𝙽𝚅𝙰𝙻𝙸𝙳 𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup)
         session = await client.export_session_string()
+        await client.disconnect()
         return await callback.message.reply(
             f"- 𝚈𝙾𝚄𝚁 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳\n\n`{session}`",
             reply_to_message_id = callback.message.id
@@ -151,7 +152,7 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, callback: Ca
         f"- 𝚈𝙾𝚄𝚁 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳\n\n`{session}`",
         reply_to_message_id = callback.message.id
     )
-    client.disconnect()
+    await client.disconnect()
     await app.send_message(user_id, "- 𝚈𝙾𝚄𝚁 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝚂𝚄𝙲𝙲𝙴𝚂𝚂𝙵𝚄𝙻𝙻𝚈. \n- 𝙲𝙷𝙴𝙲𝙺 𝚈𝙾𝚄𝚁 𝚂𝙰𝚅𝙴𝙳 𝙼𝙴𝚂𝚂𝙰𝙶𝙴𝚂. 💙", reply_markup=Keyboard([[Button("ᯓ 𓆩 ˹𝙱𝙴𝙽˼ 𓆪 #1", user_id=5451878368)]]))
 
 
