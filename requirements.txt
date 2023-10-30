@@ -1,5 +1,4 @@
 pyrogram==2.0.106
-pyrogram1==0.1.0
 pyTelegramBotAPI==4.13.0
 pyro-listener==2023.9.19
 tgcrypto
