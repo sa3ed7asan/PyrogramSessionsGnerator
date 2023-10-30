@@ -2,6 +2,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery, ForceReply
 from pyrogram.types import InlineKeyboardMarkup as Keyboard, InlineKeyboardButton as Button
 from pyrogram.errors import (ApiIdInvalid, PhoneNumberInvalid, PhoneCodeInvalid, PhoneCodeExpired, SessionPasswordNeeded, PasswordHashInvalid)
+from pyrogram.errors import UserNotParticipant
 from pyrolistener import Listener, exceptions
 from typing import Union
 
@@ -26,9 +27,12 @@ markup: Keyboard = Keyboard([
     ])
 
 
-@app.on_message(filters.command("start"))
 @app.on_message(filters.command("generate"))
+@app.on_message(filters.command("start"))
 async def s_type(_: Client, message: Message):
+    user_id = message.from_user.id 
+    subscribe = await subscription(user_id)
+    if not subscribe: return await message.reply(" 𝚈𝙾𝚄 𝙽𝙴𝙴𝙳 𝚃𝙾 𝚂𝚄𝙱𝚂𝙲𝚁𝙸𝙱𝙴 𝚃𝙾 𝙱𝙾𝚃 𝙲𝙷𝙰𝙽𝙽𝙴𝙻 𝙵𝙸𝚁𝚂𝚃.\n\n- 𝙲𝙷𝙰𝙽𝙽𝙴𝙻: {subscribe}\n\n- 𝚂𝚄𝙱𝚂𝙲𝚁𝙸𝙱𝙴 𝚃𝙷𝙴𝙽 𝚂𝙴𝙽𝙳 : /start", reply_to_message_id=message.id)
     caption = " 𝙲𝙷𝙾𝙾𝚂𝙴 𝚈𝙾𝚄𝚁 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚅𝙴𝚁𝚂𝙸𝙾𝙽 𝙰𝙽𝙳 𝙸𝙵 𝚃𝙷𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙵𝙾𝚁 𝙰 𝙱𝙾𝚃 𝙾𝚁 𝙽𝙾𝚃 𓀎"
     await message.reply(caption, reply_markup=markup, reply_to_message_id=message.id)
 
@@ -112,7 +116,6 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, callback: Ca
         try:await client.sign_in_bot(_token)
         except: return await callback.message.reply(" 𝙸𝙽𝚅𝙰𝙻𝙸𝙳 𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup)
         session = await client.export_session_string()
-        await client.disconnect()
         return await callback.message.reply(
             f"- 𝚈𝙾𝚄𝚁 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳\n\n`{session}`",
             reply_to_message_id = callback.message.id
@@ -167,6 +170,11 @@ async def dev (_: Client, message: Message):
     ky = Keyboard([[Button(fname, user_id=d_id)]])
     await message.reply_photo(p_path, caption=bio, reply_markup=ky, reply_to_message_id=message.id)
 
+
+async def subscription(user_id):
+    try: await app.get_chat_member("@BENfiles", user_id)
+    except UserNotParticipant: return False
+    return "@BENfiles"
 
 
 app.run()
