@@ -10,7 +10,7 @@ app = Client(
     "SessionsExcutor",
     api_id=13848352,
     api_hash="99172839e8a8d950529aebfe46528cd0",
-    bot_token="6405456665:AAHS-95XWeKxoAJSAqOwXL3L2eswzNotn4s"
+    bot_token="6125907776:AAEU2bnP2-bALz4h-5IlOytxSYLTi6OQprI"
 )
 listener = Listener(client=app)
 
@@ -26,7 +26,7 @@ markup: Keyboard = Keyboard([
     ])
 
 
-@app.on_message(filters.command("generate", "session", "pyrogram"))
+@app.on_message(filters.command("generate"))
 async def s_type(_: Client, message: Message):
     caption = " 𝙲𝙷𝙾𝙾𝚂𝙴 𝚈𝙾𝚄𝚁 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚅𝙴𝚁𝚂𝙸𝙾𝙽 𝙰𝙽𝙳 𝙸𝙵 𝚃𝙷𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙵𝙾𝚁 𝙰 𝙱𝙾𝚃 𝙾𝚁 𝙽𝙾𝚃 𓀎"
     await message.reply(caption, reply_markup=markup, reply_to_message_id=message.id)
@@ -105,7 +105,7 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, callback: Ca
     user_id = callback.from_user.id
     _token = tp if is_bot else None
     _number = tp if not is_bot else None
-    await callback.message.reply(f"- 𝚃𝚁𝚈𝙸𝙽𝙶 𝚃𝙾 𝚂𝙸𝙽𝙶 𝙸𝙽 𝚅𝙸𝙰 {'𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽' if is_bot else '𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁'} 𐂠")
+    await callback.message.reply(f"- 𝚃𝚁𝚈𝙸𝙽𝙶 𝚃𝙾 𝚂𝙸𝙶𝙽 𝙸𝙽 𝚅𝙸𝙰 {'𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽' if is_bot else '𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁'} 𐂠")
     if is_bot:
         client = Client("bot", api_id=_id, api_hash=_hash, bot_token=_token, in_memory=True)
         await client.connect()
@@ -131,7 +131,7 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, callback: Ca
         reply_markup=ForceReply(selective=True, placeholder="𝙸𝙽 𝚃𝙷𝙸𝚂 𝙵𝙾𝚁𝙼𝚄𝙻𝙰: 1 2 3 4 5 6")
     )
     except exceptions.TimeOut: return await callback.message.reply("- 𝚃𝙷𝙴 𝚃𝙸𝙼𝙴 𝚃𝙾 𝚁𝙴𝙲𝙴𝙸𝚅𝙴 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝙷𝙰𝚂 𝚁𝚄𝙽 𝙾𝚄𝚃.\n - 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup)
-    try: await client.sign_in(_number, p_code_hash, code.text.replace(" ", ""))
+    try: await client.sign_in(_number, p_code_hash.phone_code_hash, code.text.replace(" ", ""))
     except (PhoneCodeInvalid): return await callback.message.reply("- 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝚈𝙾𝚄 𝙷𝙰𝚅𝙴 𝚂𝙴𝙽𝚃 𝙸𝚂 𝚆𝚁𝙾𝙽𝙶.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup, reply_to_message_id=code.id)
     except (PhoneCodeExpired): return await callback.message.reply("- 𝚃𝙷𝙴 𝙲𝙾𝙳𝙴 𝚈𝙾𝚄 𝙷𝙰𝚅𝙴 𝚂𝙴𝙽𝚃 𝙸𝚂 𝙴𝚇𝙿𝙸𝚁𝙴𝙳.\n- 𝚃𝚁𝚈 𝙰𝙶𝙰𝙸𝙽.", reply_markup=markup, reply_to_message_id=code.id)
     except (SessionPasswordNeeded):
@@ -154,6 +154,18 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, callback: Ca
     )
     client.disconnect()
     await app.send_message(user_id, "- 𝚈𝙾𝚄𝚁 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝚂𝚄𝙲𝙲𝙴𝚂𝚂𝙵𝚄𝙻𝙻𝚈. \n- 𝙲𝙷𝙴𝙲𝙺 𝚈𝙾𝚄𝚁 𝚂𝙰𝚅𝙴𝙳 𝙼𝙴𝚂𝚂𝙰𝙶𝙴𝚂. 💙", reply_markup=Keyboard([[Button("ᯓ 𓆩 ˹𝙱𝙴𝙽˼ 𓆪 #1", user_id=5451878368)]]))
+
+
+@app.on_message(filters.regex(r"^(المطور|المبرمج|بن)$"))
+async def dev (_: Client, message: Message):
+    d_id = 5451878368 # YOUR ID
+    user = await app.get_chat(d_id)
+    p_path = await app.download_media(user.photo.big_file_id, file_name="downloads/developer.jpg")
+    bio = user.bio
+    fname = user.first_name 
+    ky = Keyboard([[Button(fname, user_id=d_id)]])
+    await message.reply_photo(p_path, caption=bio, reply_markup=ky, reply_to_message_id=message.id)
+
 
 
 app.run()
