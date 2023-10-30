@@ -32,7 +32,7 @@ markup: Keyboard = Keyboard([
 async def s_type(_: Client, message: Message):
     user_id = message.from_user.id 
     subscribe = await subscription(user_id)
-    if not subscribe: return await message.reply(f"- 𝚈𝙾𝚄 𝙽𝙴𝙴𝙳 𝚃𝙾 𝚂𝚄𝙱𝚂𝙲𝚁𝙸𝙱𝙴 𝚃𝙾 𝙱𝙾𝚃 𝙲𝙷𝙰𝙽𝙽𝙴𝙻 𝙵𝙸𝚁𝚂𝚃.\n\n- 𝙲𝙷𝙰𝙽𝙽𝙴𝙻: {subscribe}\n\n- 𝚂𝚄𝙱𝚂𝙲𝚁𝙸𝙱𝙴 𝚃𝙷𝙴𝙽 𝚂𝙴𝙽𝙳 : /start", reply_to_message_id=message.id)
+    if subscribe: return await message.reply(f"- 𝚈𝙾𝚄 𝙽𝙴𝙴𝙳 𝚃𝙾 𝚂𝚄𝙱𝚂𝙲𝚁𝙸𝙱𝙴 𝚃𝙾 𝙱𝙾𝚃 𝙲𝙷𝙰𝙽𝙽𝙴𝙻 𝙵𝙸𝚁𝚂𝚃.\n\n- 𝙲𝙷𝙰𝙽𝙽𝙴𝙻: {subscribe}\n\n- 𝚂𝚄𝙱𝚂𝙲𝚁𝙸𝙱𝙴 𝚃𝙷𝙴𝙽 𝚂𝙴𝙽𝙳 : /start", reply_to_message_id=message.id)
     caption = " 𝙲𝙷𝙾𝙾𝚂𝙴 𝚈𝙾𝚄𝚁 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚅𝙴𝚁𝚂𝙸𝙾𝙽 𝙰𝙽𝙳 𝙸𝙵 𝚃𝙷𝙴 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙵𝙾𝚁 𝙰 𝙱𝙾𝚃 𝙾𝚁 𝙽𝙾𝚃 𓀎"
     await message.reply(caption, reply_markup=markup, reply_to_message_id=message.id)
 
@@ -173,8 +173,8 @@ async def dev (_: Client, message: Message):
 
 async def subscription(user_id):
     try: await app.get_chat_member("@BENfiles", user_id)
-    except UserNotParticipant: return False
-    return "@BENfiles"
+    except UserNotParticipant: return "@BENfiles"
+    return 
 
 
 app.run()
