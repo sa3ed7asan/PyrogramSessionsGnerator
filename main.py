@@ -10,7 +10,7 @@ app = Client(
     "SessionsExcutor",
     api_id=13848352,
     api_hash="99172839e8a8d950529aebfe46528cd0",
-    bot_token="6125907776:AAEU2bnP2-bALz4h-5IlOytxSYLTi6OQprI"
+    bot_token="6405456665:AAHS-95XWeKxoAJSAqOwXL3L2eswzNotn4s"
 )
 listener = Listener(client=app)
 
@@ -86,7 +86,6 @@ async def getter(callback: CallbackQuery, is_bot: bool):
         chat_id=user_id,
         text=f"- 𝚂𝙴𝙽𝙳 𝚈𝙾𝚄𝚁 {'𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽' if is_bot else '𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁 -> +128372'}\n- 𝚂𝙴𝙽𝙳 /cancel 𝚃𝙾 𝙺𝙸𝙻𝙻 𝚃𝙷𝙴 𝙿𝚁𝙾𝙲𝙴𝚂𝚂. ࿊",
         reply_markup=ForceReply(selective=True, placeholder=f"- 𝚈𝙾𝚄𝚁 {'𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽' if is_bot else '𝙿𝙷𝙾𝙽𝙴 𝙽𝚄𝙼𝙱𝙴𝚁'} : "),
-        reply_to_message_id=s_api_hash.id,
         timeout=60
     )
     except exceptions.TimeOut: await callback.message.reply("- 𝚁𝚄𝙽 𝙾𝚄𝚃 𝙾𝙵 𝚃𝙸𝙼𝙴 𝚃𝙾 𝚁𝙴𝙲𝙴𝙸𝚅𝙴 𝚃𝙷𝙴 𝙱𝙾𝚃 𝚃𝙾𝙺𝙴𝙽. ‌ਊ", reply_markup=markup)
