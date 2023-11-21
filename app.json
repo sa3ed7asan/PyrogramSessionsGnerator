@@ -12,23 +12,7 @@
     "pyrogram"
     ],
     "stack": "container",
-    "env": {
-      "BOT_TOKEN": {
-        "description": "bot token",
-        "value": "",
-        "required": false
-      },
-      "SESSION_NAME2": {
-        "description": "session",
-        "value": "",
-        "required": false
-      },
-      "SESSION_NAME": {
-        "description": "session",
-        "value": "",
-        "required": false
-      }
-    },
+    "env": {},
     "buildpacks": [
           {
               "url": "heroku/python"
