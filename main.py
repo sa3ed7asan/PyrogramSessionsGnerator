@@ -5,20 +5,21 @@ from pyrogram.errors import (ApiIdInvalid, PhoneNumberInvalid, PhoneCodeInvalid,
 from pyrogram.errors import UserNotParticipant
 from pyrolistener import Listener, exceptions
 from typing import Union
+import config
 
 
 app = Client(
-    "SessionsExcutor",
-    api_id=13848352,
-    api_hash="99172839e8a8d950529aebfe46528cd0",
-    bot_token="YOUR_BOT_TOKEN"
+    "SessionsGenerator",
+    api_id=config.API_ID,
+    api_hash=config.API_HASH,
+    bot_token="config.BOT_TOKEN
 )
 listener = Listener(client=app)
 
 
 markup: Keyboard = Keyboard([
         [
-            Button("ᯓ 𓆩 ˹𝙱𝙴𝙽˼ 𓆪 #1", user_id=5451878368)
+            Button(config.OWNER_NAME, user_id=config.OWNER_ID)
         ],
         [
             Button("𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 (𝙱𝙾𝚃) 𖢣", "pyrogram bot"),
@@ -160,8 +161,8 @@ async def registration(_id: int, _hash: str, tp: str, is_bot: bool, callback: Ca
     await app.send_message(user_id, "- 𝚈𝙾𝚄𝚁 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼 𝚂𝙴𝚂𝚂𝙸𝙾𝙽 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝚂𝚄𝙲𝙲𝙴𝚂𝚂𝙵𝚄𝙻𝙻𝚈. \n- 𝙲𝙷𝙴𝙲𝙺 𝚈𝙾𝚄𝚁 𝚂𝙰𝚅𝙴𝙳 𝙼𝙴𝚂𝚂𝙰𝙶𝙴𝚂. 💙", reply_markup=Keyboard([[Button("ᯓ 𓆩 ˹𝙱𝙴𝙽˼ 𓆪 #1", user_id=5451878368)]]))
 
 
-@app.on_message(filters.regex(r"^(المطور|المبرمج|بن)$"))
-async def dev (_: Client, message: Message):
+@app.on_message(filters.regex(r"^(المطور|المبرمج|بن|dev|ben|programmer|developer)$"))
+async def dev(_: Client, message: Message):
     d_id = 5451878368 # YOUR ID
     user = await app.get_chat(d_id)
     p_path = await app.download_media(user.photo.big_file_id, file_name="downloads/developer.jpg")
@@ -172,8 +173,8 @@ async def dev (_: Client, message: Message):
 
 
 async def subscription(user_id):
-    try: await app.get_chat_member("@BENfiles", user_id)
-    except UserNotParticipant: return "@BENfiles"
+    try: await app.get_chat_member(config.SUBSCRIBE_CHANNEL, user_id)
+    except UserNotParticipant: return "@" + config.SUBSCRIBE_CHANNEL
     return 
 
 
