@@ -3,16 +3,29 @@
     "description": "Telegram bot to extract pyrogram sessions",
     "logo": "https://telegra.ph/file/c37de0fdccdad7e391714.jpg",
     "keywords": [
-    "python3",
-    "telegram",
-    "bot",
-    "pyrogram session bot",
-    "sessions",
-    "telegram-bot",
-    "pyrogram"
+        "python3",
+        "telegram",
+        "bot",
+        "pyrogram session bot",
+        "sessions",
+        "telegram-bot",
+        "pyrogram"
     ],
     "stack": "container",
-    "env": {},
+    "env": {
+        "API_ID": {
+            "description": "get it from telegram authorization url.",
+            "required": true,
+        },
+        "API_HASH": {
+            "description": "get it from telegram authorization url.",
+            "required": true,
+        },
+        "BOT_TOKEN": {
+            "description": "get it from @BotFather on Telegram.",
+            "required": true,
+        }
+    },
     "buildpacks": [
           {
               "url": "heroku/python"
