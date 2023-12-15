@@ -26,13 +26,16 @@
             "required": true
         },
         "OWNER_ID": {
-            "description": "Your Telegram Account Id"
+            "description": "Your Telegram Account Id",
+            "required": false
         },
         "OWNER_NAME": {
-            "description": "Your Telegram Account Name"
+            "description": "Your Telegram Account Name",
+            "required": false
         },
         "SUBSCRIBE_CHANNEL": {
-            "description": "Your Telegram Channel ( Be sure to add the bot to it as admin. )"
+            "description": "Your Telegram Channel ( Be sure to add the bot to it as admin. )",
+            "required": false
         }
     },
     "buildpacks": [
