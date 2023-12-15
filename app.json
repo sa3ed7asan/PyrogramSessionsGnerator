@@ -15,15 +15,24 @@
     "env": {
         "API_ID": {
             "description": "get it from telegram authorization url.",
-            "required": true,
+            "required": true
         },
         "API_HASH": {
             "description": "get it from telegram authorization url.",
-            "required": true,
+            "required": true
         },
         "BOT_TOKEN": {
             "description": "get it from @BotFather on Telegram.",
-            "required": true,
+            "required": true
+        },
+        "OWNER_ID": {
+            "description": "Your Telegram Account Id"
+        },
+        "OWNER_NAME": {
+            "description": "Your Telegram Account Name"
+        },
+        "SUBSCRIBE_CHANNEL": {
+            "description": "Your Telegram Channel ( Be sure to add the bot to it as admin. )"
         }
     },
     "buildpacks": [
