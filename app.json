@@ -35,7 +35,7 @@
         },
         "SUBSCRIBE_CHANNEL": {
             "description": "Your Telegram Channel ( Be sure to add the bot to it as admin. )",
-            "required": false
+            "required": true
         }
     },
     "buildpacks": [
