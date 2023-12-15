@@ -1,6 +1,6 @@
 {
-    "name": "Ben Sessions Excursion Bot",
-    "description": "Telegram bot to extract pyrogram sessions",
+    "name": "Pyrpgram Sessions Generator Bot",
+    "description": "Telegram bot to generate pyrogram sessions",
     "logo": "https://telegra.ph/file/c37de0fdccdad7e391714.jpg",
     "keywords": [
         "python3",
